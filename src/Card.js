@@ -1,9 +1,9 @@
 import React from 'react';
 import './Card.css';
 
-const Card = (props) => {
-  const {first, last } = props.person.name;
-  const imgSrc = props.person.picture.large;
+const Card = ({person}) => {
+  const {first, last } = person.name;
+  const imgSrc = person.picture.large;
 
   return (
     <div className="card">
