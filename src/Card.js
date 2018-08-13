@@ -2,7 +2,7 @@ import React from 'react';
 import './Card.css';
 
 const Card = ({person}) => {
-  const {first, last } = person.name;
+  const {first, last} = person.name;
   const imgSrc = person.picture.large;
 
   return (
