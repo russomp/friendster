@@ -1,16 +1,21 @@
 import React, {Component} from 'react';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
-import {people} from './people';
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      people,
+      people: [],
       searchField: '',
     }
     this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('https://randomuser.me/api/?results=30')
+      .then(response => response.json())
+      .then(({results}) => this.setState({people: results}));
   }
 
   handleInputChange(event) {
