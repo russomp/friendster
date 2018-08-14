@@ -15,7 +15,7 @@
 }
 
 .card-header {
-  background-image: linear-gradient(120deg, rgb(240, 152, 132) 0%, rgb(240, 152, 140) 100%);
+  background-image: linear-gradient(135deg, rgb(240, 151, 161) 0%, rgb(238, 150, 105) 100%);
   border-radius: 5px 5px 0 0;
   padding: 25px 0;
   position: relative;
@@ -26,6 +26,7 @@
   border: 3px solid #fff;
   border-radius: 171993px;
   margin: 50px 0 0 0;
+  opacity: .85;
   width: 100px;
 }
 
