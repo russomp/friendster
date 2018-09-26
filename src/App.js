@@ -3,44 +3,42 @@ import { connect } from 'react-redux';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
 
-import { setSearchField } from './actions';
+import { setSearchField, requestRobots } from './actions';
 
 const mapStateToProps = state => {
   return {
-    searchField: state.searchField,
+    searchField: state.searchRobots.searchField,
+    isPending: state.requestRobots.isPending,
+    people: state.requestRobots.people,
+    error: state.requestRobots.error,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     handleInputChange: event => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots()),
   };
 };
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      people: [],
-    };
-  }
-
   componentDidMount() {
-    fetch('https://randomuser.me/api/?results=30')
-      .then(response => response.json())
-      .then(({ results }) => this.setState({ people: results }));
+    this.props.onRequestRobots();
   }
 
   render() {
-    const filteredFriendsList = this.state.people.filter(person => {
+    const { searchField, isPending, people, error } = this.props;
+    const filteredFriendsList = people.filter(person => {
       const fullName = `${person.name.first} ${person.name.last}`;
       return fullName
         .toLocaleLowerCase()
-        .includes(this.props.searchField.toLocaleLowerCase());
+        .includes(searchField.toLocaleLowerCase());
     });
 
-    if (!this.state.people) {
-      return <h3>Loading . . .</h3>;
+    if (isPending) {
+      return <h3>Loading...</h3>;
+    } else if (error !== '') {
+      return <h3>Ooops... {error}</h3>;
     } else {
       return (
         <div className="container">
