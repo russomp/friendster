@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
+
+import { setSearchField } from './actions';
+
+const mapStateToProps = state => {
+  return {
+    searchField: state.searchField,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleInputChange: event => dispatch(setSearchField(event.target.value)),
+  };
+};
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       people: [],
-      searchField: '',
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -18,18 +31,12 @@ class App extends Component {
       .then(({ results }) => this.setState({ people: results }));
   }
 
-  handleInputChange(event) {
-    this.setState({
-      searchField: event.target.value,
-    });
-  }
-
   render() {
     const filteredFriendsList = this.state.people.filter(person => {
       const fullName = `${person.name.first} ${person.name.last}`;
       return fullName
         .toLocaleLowerCase()
-        .includes(this.state.searchField.toLocaleLowerCase());
+        .includes(this.props.searchField.toLocaleLowerCase());
     });
 
     if (!this.state.people) {
@@ -38,7 +45,7 @@ class App extends Component {
       return (
         <div className="container">
           <h1>Friendster</h1>
-          <SearchBox onInputChange={this.handleInputChange} />
+          <SearchBox onInputChange={this.props.handleInputChange} />
           <CardList people={filteredFriendsList} />
         </div>
       );
@@ -46,4 +53,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
